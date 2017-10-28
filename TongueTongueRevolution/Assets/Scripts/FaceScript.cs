@@ -10,6 +10,9 @@ public class FaceScript : MonoBehaviour {
 	private CVCameraMat cvCameraMat;
 	private Texture2D texture;
 	private bool startCVCam = false;
+	private int x, y,formerX, formerY, dx, dy;
+	public int lineNum;
+	private GameManager _gameManager;
 
 	private CascadeClassifier faceCascade;
 
@@ -19,6 +22,7 @@ public class FaceScript : MonoBehaviour {
 	// Use this for initialization
 	void Start()
 	{
+		_gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
 		//カスケードファイルを読み込ませる
 		string faceCascadePath = Application.streamingAssetsPath + "/Cascade/mouth.xml";
 		faceCascade = new CascadeClassifier(faceCascadePath);
@@ -70,13 +74,41 @@ public class FaceScript : MonoBehaviour {
 											if (faces.rows () > 0) {
 												List<OpenCVForUnity.Rect> rectsList = faces.toList ();
 												for (int i = 0; i < rectsList.ToArray().Length; i++) {
-													//検出した顔の座標取得
+
+
 													OpenCVForUnity.Rect faceRect = rectsList[i];
+													x = faceRect.x;
+													y = faceRect.y;
 
-													/* 検出した顔に対する処理開始 */
+													if (i > 0) {
+														//左上が（０、０）、右下が（１００、１００）
+														OpenCVForUnity.Rect beforeFaceRect = rectsList [i-1];
+														formerX = beforeFaceRect.x;
+														formerY = beforeFaceRect.y;
+														dx = x - formerX;
+														dy = y - formerY;
+
+														//ここ！！！！！認識精度で妥協しちゃった！！！！！！！！１
+														if (dx > 0 && dy > 0) {
+															CheckInput (KeyCode.J);
+															CheckInput (KeyCode.K);
+														} else if (dx > 0 && dy < 0) {
+															CheckInput (KeyCode.K);
+															CheckInput (KeyCode.F);
+														} else if (dx < 0 && dy > 0) {
+															CheckInput (KeyCode.F);
+															CheckInput (KeyCode.D);
+														} else if (dx < 0 && dy < 0) {
+															CheckInput (KeyCode.D);
+															CheckInput (KeyCode.J);
+														}
+														Debug.Log(x + ":"+y);
+
+													}
 
 
-													/* 検出した顔に対する処理終了 */
+
+
 												}
 											}
 										}
@@ -108,9 +140,15 @@ public class FaceScript : MonoBehaviour {
 		} else {
 			Debug.LogError("NotFound:rawImage");
 		}
+
+		this.transform.position += Vector3.down * 10 * Time.deltaTime;
+		if (this.transform.position.y < -5.0f) {
+			Debug.Log("false");
+			Destroy (this.gameObject);
+		}
 	}
 
-	private void Init()
+	public void Init()
 	{
 		startCVCam = false;
 		//カメラ画像の表示先があるか確認
@@ -196,5 +234,25 @@ public class FaceScript : MonoBehaviour {
 	{
 		startCVCam = false;
 		texture = null;
+	}
+
+	void CheckInput(KeyCode key){
+		if (Input.GetKeyDown (key)) {
+			_gameManager.GoodTimingFunc (lineNum);
+			Destroy (this.gameObject);
+		}
+	}
+
+	public void inputLeft(){
+		CheckInput (KeyCode.D);
+	}
+	public void inputTop(){
+		CheckInput (KeyCode.F);
+	}
+	public void inputDown(){
+		CheckInput (KeyCode.J);
+	}
+	public void inputRight(){
+		CheckInput (KeyCode.K);
 	}
 }
