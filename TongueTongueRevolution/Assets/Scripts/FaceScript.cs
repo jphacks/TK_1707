@@ -91,23 +91,23 @@ public class FaceScript : MonoBehaviour {
 														//ここ！！！！！認識精度で妥協しちゃった！！！！！！！！１
 														if (dx > 0 && dy > 0) {
 															CheckInput (KeyCode.J);
-															CheckInput (KeyCode.K);
+															CheckInput (KeyCode.Space);
+															Debug.Log ("→ or ↓");
 														} else if (dx > 0 && dy < 0) {
-															CheckInput (KeyCode.K);
+															CheckInput (KeyCode.J);
 															CheckInput (KeyCode.F);
+															Debug.Log ("→ or ↑");
 														} else if (dx < 0 && dy > 0) {
 															CheckInput (KeyCode.F);
 															CheckInput (KeyCode.D);
+															Debug.Log ("↑ or ←");
 														} else if (dx < 0 && dy < 0) {
 															CheckInput (KeyCode.D);
-															CheckInput (KeyCode.J);
+															CheckInput (KeyCode.Space);
+															Debug.Log ("← or ↓");
 														}
 														Debug.Log(x + ":"+y);
-
 													}
-
-
-
 
 												}
 											}
@@ -141,11 +141,11 @@ public class FaceScript : MonoBehaviour {
 			Debug.LogError("NotFound:rawImage");
 		}
 
-		this.transform.position += Vector3.down * 10 * Time.deltaTime;
-		if (this.transform.position.y < -5.0f) {
-			Debug.Log("false");
-			Destroy (this.gameObject);
-		}
+		//this.transform.position += Vector3.down * 10 * Time.deltaTime;
+		//if (this.transform.position.y < -5.0f) {
+		//	Debug.Log("false");
+		//	Destroy (this.gameObject);
+		//}
 	}
 
 	public void Init()
