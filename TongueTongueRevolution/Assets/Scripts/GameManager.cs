@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
 	public string filePass;
 	private int _notesCount = 0;
 
-	private AudioSource _audioSource;
+	public AudioSource _audioSource;
 	private float _startTime = 0;
 
 	public float timeOffset = -1;
@@ -22,9 +22,12 @@ public class GameManager : MonoBehaviour {
 
 	public Text scoreText;
 	private int score = 0;
+	public string musicTitle = "";
 	// Use this for initialization
 	void Start () {
+		musicTitle = GlobalObjects.getInstance().StringParam;
 		_audioSource = GameObject.Find ("GameMusic").GetComponent<AudioSource> ();
+		_audioSource.clip = Resources.Load ("Musics/" + musicTitle) as AudioClip;
 		_timing = new float[1024];
 		_lineNum = new int[1024];
 		LoadCSV ();
@@ -42,6 +45,7 @@ public class GameManager : MonoBehaviour {
 	public void StartGame(){
 		_startTime = Time.time;
 		_audioSource.Play ();
+		Debug.Log (Application.dataPath + "/Musics/" + musicTitle);
 		_isPlaying = true;
 	}
 
@@ -65,6 +69,7 @@ public class GameManager : MonoBehaviour {
 	//lineNumに矢印の方向
 	void LoadCSV(){
 		int i = 0, j;
+		filePass = "CSV/" + musicTitle;
 		TextAsset csv = Resources.Load (filePass) as TextAsset;
 		StringReader reader = new StringReader (csv.text);
 		while (reader.Peek () > -1) {
@@ -76,6 +81,7 @@ public class GameManager : MonoBehaviour {
 				_lineNum [i] = int.Parse( values [1] );
 			}
 			i++;
+			Debug.Log (i);
 		}
 	}
 
