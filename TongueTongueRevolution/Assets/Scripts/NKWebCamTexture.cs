@@ -12,7 +12,7 @@ public class NKWebCamTexture : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		//カメラの初期化
-		initWebCamTexture ();
+		initWebCamTexture();
 	}
 
 	// Update is called once per frame
