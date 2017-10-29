@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 	public GameObject[] notes;
@@ -25,6 +26,10 @@ public class GameManager : MonoBehaviour {
 	public string musicTitle = "";
 	public static int dx = 0, dy = 0;
 
+	public float timeThreshord = 20;
+	private float timeNow;
+	private float timeOrigin;
+
 	// Use this for initialization
 	void Start () {
 		musicTitle = GlobalObjects.getInstance().StringParam;
@@ -34,6 +39,7 @@ public class GameManager : MonoBehaviour {
 		_lineNum = new int[1024];
 		LoadCSV ();
 		StartGame ();
+		timeOrigin = Time.time;
 	}
 	
 	// Update is called once per frame
@@ -42,6 +48,13 @@ public class GameManager : MonoBehaviour {
 			CheckNextNotes ();
 			scoreText.text = score.ToString ();
 		}
+		//Debug.Log ();
+
+		if (Time.time - timeOrigin> timeThreshord) {
+			Debug.Log ("GameEnd");
+			gotoResult();
+		}
+
 	}
 
 	public void StartGame(){
@@ -53,6 +66,10 @@ public class GameManager : MonoBehaviour {
 
 	//ゲーム開始時間とnotesを落とす時間を比較して，落とす時間を過ぎていればnotesを落とす
 	void CheckNextNotes(){
+//		if (_notesCount > _lineNum.Length) {
+//			//gotoResult ();
+//			Debug.Log("countend");
+//		}
 		while (_timing [_notesCount] + timeOffset < GetMusicTime () && _timing [_notesCount] != 0) {
 			SpawnNotes (_lineNum[_notesCount]);
 			_notesCount++;
@@ -106,6 +123,10 @@ public class GameManager : MonoBehaviour {
 	}
 	public int getDy(){
 		return dy;
+	}
+
+	private void gotoResult(){
+		SceneManager.LoadScene ("ResultScene");
 	}
 
 

@@ -11,7 +11,7 @@ public class scoreScript : MonoBehaviour {
 
 	public Text scoretext;
 
-	private int tempScore;
+	private string tempScore;
 
 	// Use this for initialization
 	void Start () {
@@ -20,7 +20,7 @@ public class scoreScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		tempScore = (GameManager.score);
-		//scoretext.text = tempScore.ToString;
+		tempScore = (GameManager.score).ToString();
+		scoretext.text = tempScore;
 	}
 }
