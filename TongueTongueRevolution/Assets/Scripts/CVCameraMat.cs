@@ -103,7 +103,11 @@ public class CVCameraMat : MonoBehaviour
 			transform.localRotation = Quaternion.Euler( euler.x, euler.y, euler.z - 90 );
 			//一番最初に認識したカメラを使用する
 			if (WebCamTexture.devices.Length > 0) {
-				webCamDevice = WebCamTexture.devices [1];
+
+				//スマホならインカメ -> 1
+				//webCamDevice = WebCamTexture.devices [1];
+				//macなら１つのカメラ -> 0
+				webCamDevice = WebCamTexture.devices [0];
 				webCamTexture = new WebCamTexture (webCamDevice.name, requestWidth, requestHeight);
 			} else {
 				webCamTexture = new WebCamTexture (requestWidth, requestHeight);
