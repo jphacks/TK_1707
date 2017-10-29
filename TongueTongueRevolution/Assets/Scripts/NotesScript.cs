@@ -14,7 +14,7 @@ public class NotesScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		this.transform.position += Vector3.down * 10 * Time.deltaTime;
+		this.transform.position += Vector3.down * 5 * Time.deltaTime;
 		if (this.transform.position.y < -5.0f) {
 			//Debug.Log("false");
 			//false
