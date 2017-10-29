@@ -77,7 +77,7 @@ public class FaceScript : MonoBehaviour {
 			}
 		} else {
 			Debug.LogError("NotFound:rawImage");
-		}
+		} 
 	}
 
 	public void Init()

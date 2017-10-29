@@ -21,9 +21,10 @@ public class GameManager : MonoBehaviour {
 	private bool _isPlaying = false;
 
 	public Text scoreText;
-	private int score = 0;
+	public static int score = 0;
 	public string musicTitle = "";
 	public static int dx = 0, dy = 0;
+
 	// Use this for initialization
 	void Start () {
 		musicTitle = GlobalObjects.getInstance().StringParam;
@@ -106,4 +107,6 @@ public class GameManager : MonoBehaviour {
 	public int getDy(){
 		return dy;
 	}
+
+
 }
