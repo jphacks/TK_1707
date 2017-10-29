@@ -3,6 +3,8 @@ using System.Collections;
 using System;
 using OpenCVForUnity;
 using UnityEngine.Events;
+using UnityEngine.UI;
+
 
 public class CVCameraMat : MonoBehaviour
 {
@@ -95,9 +97,13 @@ public class CVCameraMat : MonoBehaviour
 
 		//希望のカメラが無かった場合
 		if (webCamTexture == null) {
+			//縦なら回転させるらしい
+			var euler = transform.localRotation.eulerAngles;
+
+			transform.localRotation = Quaternion.Euler( euler.x, euler.y, euler.z - 90 );
 			//一番最初に認識したカメラを使用する
 			if (WebCamTexture.devices.Length > 0) {
-				webCamDevice = WebCamTexture.devices [0];
+				webCamDevice = WebCamTexture.devices [1];
 				webCamTexture = new WebCamTexture (webCamDevice.name, requestWidth, requestHeight);
 			} else {
 				webCamTexture = new WebCamTexture (requestWidth, requestHeight);
