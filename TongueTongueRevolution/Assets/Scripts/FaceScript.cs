@@ -89,6 +89,7 @@ public class FaceScript : MonoBehaviour {
 														dy = y - formerY;
 
 														//ここ！！！！！認識精度で妥協しちゃった！！！！！！！！１
+														/*
 														if (dx > 0 && dy > 0) {
 															CheckInput (KeyCode.J);
 															CheckInput (KeyCode.Space);
@@ -106,6 +107,8 @@ public class FaceScript : MonoBehaviour {
 															CheckInput (KeyCode.Space);
 															Debug.Log ("← or ↓");
 														}
+														*/
+														_gameManager.setDxDy (dx, dy);
 														Debug.Log(x + ":"+y);
 													}
 

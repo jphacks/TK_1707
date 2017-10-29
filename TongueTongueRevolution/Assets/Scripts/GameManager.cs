@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
 	public Text scoreText;
 	private int score = 0;
 	public string musicTitle = "";
+	public static int dx = 0, dy = 0;
 	// Use this for initialization
 	void Start () {
 		musicTitle = GlobalObjects.getInstance().StringParam;
@@ -92,5 +93,17 @@ public class GameManager : MonoBehaviour {
 	public void GoodTimingFunc(int num){
 		Debug.Log ("good" + num);
 		score++;
+	}
+
+	public void setDxDy(int x, int y){
+		dx = x;
+		dy = y;
+	}
+
+	public int getDx(){
+		return dx;
+	}
+	public int getDy(){
+		return dy;
 	}
 }
