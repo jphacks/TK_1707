@@ -601,12 +601,17 @@ PlayerSettings:
     daydream:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Collab: 1
+    ErrorHub: 0
+    Hub: 0
+    UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: ec2f1425-78f1-4a88-913b-28e7e3ccdfa3
-  projectName: TongueTongueRevolution
-  organizationId: unity_3i1zjhom25mmza
+  cloudProjectId: fe70a323-243a-4d52-a201-94bf9333a5e9
+  projectName: OpenCVtest
+  organizationId: n00b_share
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

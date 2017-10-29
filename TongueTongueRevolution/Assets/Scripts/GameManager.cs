@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 	public GameObject[] notes;
@@ -13,7 +14,7 @@ public class GameManager : MonoBehaviour {
 	public string filePass;
 	private int _notesCount = 0;
 
-	private AudioSource _audioSource;
+	public AudioSource _audioSource;
 	private float _startTime = 0;
 
 	public float timeOffset = -1;
@@ -21,14 +22,24 @@ public class GameManager : MonoBehaviour {
 	private bool _isPlaying = false;
 
 	public Text scoreText;
-	private int score = 0;
+	public static int score = 0;
+	public string musicTitle = "";
+	public static int dx = 0, dy = 0;
+
+	public float timeThreshord = 20;
+	private float timeNow;
+	private float timeOrigin;
+
 	// Use this for initialization
 	void Start () {
+		musicTitle = GlobalObjects.getInstance().StringParam;
 		_audioSource = GameObject.Find ("GameMusic").GetComponent<AudioSource> ();
+		_audioSource.clip = Resources.Load ("Musics/" + musicTitle) as AudioClip;
 		_timing = new float[1024];
 		_lineNum = new int[1024];
 		LoadCSV ();
 		StartGame ();
+		timeOrigin = Time.time;
 	}
 	
 	// Update is called once per frame
@@ -37,16 +48,28 @@ public class GameManager : MonoBehaviour {
 			CheckNextNotes ();
 			scoreText.text = score.ToString ();
 		}
+		//Debug.Log ();
+
+		if (Time.time - timeOrigin> timeThreshord) {
+			Debug.Log ("GameEnd");
+			gotoResult();
+		}
+
 	}
 
 	public void StartGame(){
 		_startTime = Time.time;
 		_audioSource.Play ();
+		Debug.Log (Application.dataPath + "/Musics/" + musicTitle);
 		_isPlaying = true;
 	}
 
 	//ゲーム開始時間とnotesを落とす時間を比較して，落とす時間を過ぎていればnotesを落とす
 	void CheckNextNotes(){
+//		if (_notesCount > _lineNum.Length) {
+//			//gotoResult ();
+//			Debug.Log("countend");
+//		}
 		while (_timing [_notesCount] + timeOffset < GetMusicTime () && _timing [_notesCount] != 0) {
 			SpawnNotes (_lineNum[_notesCount]);
 			_notesCount++;
@@ -65,6 +88,7 @@ public class GameManager : MonoBehaviour {
 	//lineNumに矢印の方向
 	void LoadCSV(){
 		int i = 0, j;
+		filePass = "CSV/" + musicTitle;
 		TextAsset csv = Resources.Load (filePass) as TextAsset;
 		StringReader reader = new StringReader (csv.text);
 		while (reader.Peek () > -1) {
@@ -76,6 +100,7 @@ public class GameManager : MonoBehaviour {
 				_lineNum [i] = int.Parse( values [1] );
 			}
 			i++;
+			Debug.Log (i);
 		}
 	}
 
@@ -87,4 +112,22 @@ public class GameManager : MonoBehaviour {
 		Debug.Log ("good" + num);
 		score++;
 	}
+
+	public void setDxDy(int x, int y){
+		dx = x;
+		dy = y;
+	}
+
+	public int getDx(){
+		return dx;
+	}
+	public int getDy(){
+		return dy;
+	}
+
+	private void gotoResult(){
+		SceneManager.LoadScene ("ResultScene");
+	}
+
+
 }
