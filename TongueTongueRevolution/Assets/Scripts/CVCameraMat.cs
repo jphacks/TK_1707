@@ -79,20 +79,34 @@ public class CVCameraMat : MonoBehaviour
 		}
 
 		if (webCamTexture == null) {
-			//縦なら回転させるらしい
-			var euler = transform.localRotation.eulerAngles;
-
-			transform.localRotation = Quaternion.Euler( euler.x, euler.y, euler.z - 90 );
 			if (WebCamTexture.devices.Length > 0) {
 
 				//スマホならインカメ -> 1
 				//webCamDevice = WebCamTexture.devices [1];
 				//macなら１つのカメラ -> 0
+				#if UNITY_EDITOR
 				webCamDevice = WebCamTexture.devices [0];
+				#else
+				var euler = transform.localRotation.eulerAngles;
+				transform.localRotation = Quaternion.Euler (euler.x, euler.y, euler.z - 90);
+				webCamDevice = WebCamTexture.devices [1];
+				#endif
 				webCamTexture = new WebCamTexture (webCamDevice.name, requestWidth, requestHeight);
 			} else {
 				webCamTexture = new WebCamTexture (requestWidth, requestHeight);
 			}
+			/*
+			if (WebCamTexture.devices.Length > 0) {
+				
+				//スマホならインカメ -> 1
+				webCamDevice = WebCamTexture.devices [1];
+			} else {
+				//macなら１つのカメラ -> 0
+				webCamDevice = WebCamTexture.devices [0];
+			}
+			webCamTexture = new WebCamTexture (webCamDevice.name, requestWidth, requestHeight);
+			webCamTexture = new WebCamTexture (requestWidth, requestHeight);
+			*/
 		}
 		if (webCamTexture) {
 			webCamTexture.Play ();
